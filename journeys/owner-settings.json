@@ -5,10 +5,16 @@
       "label": "Owner settings",
       "steps": [
         {
+          "enterAs": "owner"
+        },
+        {
           "goto": "/settings"
         },
         {
           "expectHeading": "Owner settings"
+        },
+        {
+          "expectHeading": "Gift statuses"
         }
       ]
     }

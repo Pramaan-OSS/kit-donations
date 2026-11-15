@@ -5,10 +5,16 @@
       "label": "Campaign desk",
       "steps": [
         {
+          "enterAs": "owner"
+        },
+        {
           "goto": "/manage"
         },
         {
           "expectHeading": "Campaign desk"
+        },
+        {
+          "expectHeading": "Offline gifts"
         }
       ]
     }
