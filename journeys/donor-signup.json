@@ -1,0 +1,17 @@
+{
+  "items": [
+    {
+      "id": "donor-signup",
+      "label": "Become a donor",
+      "steps": [
+        {
+          "goto": "/signin"
+        },
+        {
+          "expectHeading": "Become a donor"
+        }
+      ]
+    }
+  ],
+  "names": {}
+}

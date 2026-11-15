@@ -1,0 +1,17 @@
+ALTER TABLE app_users ALTER COLUMN role SET DEFAULT 'donor';
+CREATE TABLE campaign_categories(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),name text NOT NULL UNIQUE);
+INSERT INTO campaign_categories(name) VALUES('Community'),('Education');
+CREATE TABLE gift_statuses(id text PRIMARY KEY,name text NOT NULL UNIQUE);
+INSERT INTO gift_statuses VALUES('pending','Awaiting confirmation'),('confirmed','Confirmed');
+CREATE TABLE campaigns(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),title text NOT NULL,story text NOT NULL,goal integer NOT NULL CHECK(goal>0),starts_at date NOT NULL DEFAULT CURRENT_DATE,ends_at date NOT NULL DEFAULT CURRENT_DATE+90,open boolean NOT NULL DEFAULT true,category_id uuid NOT NULL REFERENCES campaign_categories(id),image_key text, CHECK(ends_at>=starts_at));
+INSERT INTO campaigns(title,story,goal,category_id) SELECT 'A place for everyone','Help our community turn an empty room into a welcoming space for learning, sharing and growing together.',1000000,id FROM campaign_categories WHERE name='Community';
+CREATE TABLE suggested_amounts(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),campaign_id uuid NOT NULL REFERENCES campaigns(id),amount integer NOT NULL CHECK(amount>0 AND amount<=10000000));
+INSERT INTO suggested_amounts(campaign_id,amount) SELECT id,unnest(ARRAY[1000,2500,5000]) FROM campaigns;
+CREATE TABLE donors(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),user_id uuid UNIQUE REFERENCES app_users(id),name text NOT NULL,email text NOT NULL,phone text NOT NULL DEFAULT '');
+CREATE TABLE giving_requests(id uuid PRIMARY KEY,donor_id uuid NOT NULL REFERENCES donors(id),campaign_id uuid NOT NULL REFERENCES campaigns(id),amount integer NOT NULL CHECK(amount>0),monthly boolean NOT NULL,anonymous boolean NOT NULL DEFAULT false,guest_hash text,created_at timestamptz NOT NULL DEFAULT now(),checkout_ref text UNIQUE,billing_ref text UNIQUE,customer_ref text,checkout_url text,status text NOT NULL DEFAULT 'pending',action_key uuid,pending_action text,action_at timestamptz);
+CREATE TABLE gifts(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),request_id uuid REFERENCES giving_requests(id),campaign_id uuid NOT NULL REFERENCES campaigns(id),donor_id uuid NOT NULL REFERENCES donors(id),amount integer NOT NULL CHECK(amount>0),currency text NOT NULL DEFAULT 'GBP',anonymous boolean NOT NULL DEFAULT false,status_id text NOT NULL REFERENCES gift_statuses(id),reference text NOT NULL UNIQUE,confirmed_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE receipt_counters(year integer PRIMARY KEY,last_number integer NOT NULL);
+CREATE TABLE receipts(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),gift_id uuid NOT NULL UNIQUE REFERENCES gifts(id),year integer NOT NULL,number integer NOT NULL,email_status text NOT NULL DEFAULT 'not-sent',UNIQUE(year,number));
+CREATE TABLE campaign_updates(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),campaign_id uuid NOT NULL REFERENCES campaigns(id),body text NOT NULL,created_at timestamptz NOT NULL DEFAULT now());
+CREATE INDEX gifts_campaign ON gifts(campaign_id,status_id);
+CREATE INDEX requests_donor ON giving_requests(donor_id);

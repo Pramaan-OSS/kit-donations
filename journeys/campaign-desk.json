@@ -1,0 +1,17 @@
+{
+  "items": [
+    {
+      "id": "campaign-desk",
+      "label": "Campaign desk",
+      "steps": [
+        {
+          "goto": "/manage"
+        },
+        {
+          "expectHeading": "Campaign desk"
+        }
+      ]
+    }
+  ],
+  "names": {}
+}

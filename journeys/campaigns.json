@@ -1,0 +1,17 @@
+{
+  "items": [
+    {
+      "id": "campaigns",
+      "label": "Small gifts.",
+      "steps": [
+        {
+          "goto": "/"
+        },
+        {
+          "expectHeading": "Small gifts."
+        }
+      ]
+    }
+  ],
+  "names": {}
+}

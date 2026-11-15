@@ -1,0 +1,9 @@
+{
+  "kit": "donations",
+  "version": "0.1.0",
+  "contract": "1",
+  "green": false,
+  "run": null,
+  "gates": [],
+  "note": "Full container CI is run by product-loop on pinning. Local gates are recorded in .scratch/KIT-DONE.md."
+}

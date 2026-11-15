@@ -1,0 +1,17 @@
+{
+  "items": [
+    {
+      "id": "monthly-gift",
+      "label": "My giving",
+      "steps": [
+        {
+          "goto": "/giving"
+        },
+        {
+          "expectHeading": "My giving"
+        }
+      ]
+    }
+  ],
+  "names": {}
+}

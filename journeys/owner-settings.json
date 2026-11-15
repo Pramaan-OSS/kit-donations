@@ -1,0 +1,17 @@
+{
+  "items": [
+    {
+      "id": "owner-settings",
+      "label": "Owner settings",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "expectHeading": "Owner settings"
+        }
+      ]
+    }
+  ],
+  "names": {}
+}

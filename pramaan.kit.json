@@ -1,0 +1,191 @@
+{
+  "id": "donations",
+  "version": "0.1.0",
+  "title": "Donations",
+  "summary": "Raise funds with public campaigns, one-off gifts, monthly giving and numbered receipts.",
+  "category": "business-operations",
+  "stack": {
+    "contract": "1",
+    "template": "data",
+    "next": "16.3.6",
+    "react": "19.3.0",
+    "node": "24.18.0",
+    "packageManager": "pnpm@11.15.1"
+  },
+  "licence": "MIT",
+  "provenance": {
+    "mode": "derived",
+    "starter": "Pramaan-Dev/product-loop@370419379645405019af029fa08a75680ad75c8b",
+    "derivedFrom": ["Pramaan-Dev/product-loop@370419379645405019af029fa08a75680ad75c8b"],
+    "upstreamNotices": ["NOTICE.md"],
+    "writtenBy": "person"
+  },
+  "measured": {
+    "on": "2026-11-14",
+    "by": "person",
+    "draft": {
+      "peakMiB": 988,
+      "limitMiB": 2560,
+      "firstAnswerSeconds": 3
+    },
+    "verifier": {
+      "peakMiB": 1117,
+      "limitMiB": 2048,
+      "seconds": 15
+    },
+    "browser": {
+      "peakMiB": 181,
+      "limitMiB": 1024
+    }
+  },
+  "entryPoints": [
+    {
+      "route": "/",
+      "file": "app/page.tsx",
+      "audience": "visitor",
+      "summary": "Browse campaigns."
+    },
+    {
+      "route": "/signin",
+      "file": "app/signin/page.tsx",
+      "audience": "visitor",
+      "summary": "Sign in or create a donor account."
+    },
+    {
+      "route": "/campaign",
+      "file": "app/campaign/page.tsx",
+      "audience": "visitor",
+      "summary": "Read a campaign and give."
+    },
+    {
+      "route": "/thanks",
+      "file": "app/thanks/page.tsx",
+      "audience": "visitor",
+      "summary": "Read a guest receipt with its browser proof."
+    },
+    {
+      "route": "/giving",
+      "file": "app/giving/page.tsx",
+      "audience": "donor",
+      "summary": "Manage only your own giving and receipts."
+    },
+    {
+      "route": "/manage",
+      "file": "app/manage/page.tsx",
+      "audience": "staff",
+      "summary": "Manage campaigns, donors and offline gifts."
+    },
+    {
+      "route": "/settings",
+      "file": "app/settings/page.tsx",
+      "audience": "owner",
+      "summary": "Manage staff and editable lists."
+    },
+    {
+      "route": "/owner",
+      "file": "app/owner/page.tsx",
+      "audience": "owner",
+      "summary": "Set owner sign-in details."
+    }
+  ],
+  "roles": {
+    "owner": {
+      "source": "owner-pass",
+      "summary": "Manages all records and settings."
+    },
+    "staff": {
+      "source": "added-by-owner",
+      "summary": "Manages campaigns and donors; no settings."
+    },
+    "donor": {
+      "source": "public-sign-up",
+      "summary": "Sees only their own giving and receipts."
+    },
+    "visitor": {
+      "source": "anonymous",
+      "summary": "Browses and gives once as a guest."
+    }
+  },
+  "journeys": [
+    {
+      "id": "campaigns",
+      "role": "visitor",
+      "summary": "Small gifts.",
+      "status": "ships-working",
+      "checklist": "journeys/campaigns.json"
+    },
+    {
+      "id": "donor-signup",
+      "role": "visitor",
+      "summary": "Become a donor",
+      "status": "ships-working",
+      "checklist": "journeys/donor-signup.json"
+    },
+    {
+      "id": "owner-settings",
+      "role": "owner",
+      "summary": "Owner settings",
+      "status": "ships-working",
+      "checklist": "journeys/owner-settings.json"
+    },
+    {
+      "id": "campaign-desk",
+      "role": "owner",
+      "summary": "Campaign desk",
+      "status": "ships-working",
+      "checklist": "journeys/campaign-desk.json"
+    },
+    {
+      "id": "my-giving",
+      "role": "donor",
+      "summary": "My giving",
+      "status": "ships-working",
+      "checklist": "journeys/my-giving.json"
+    },
+    {
+      "id": "guest-gift",
+      "role": "visitor",
+      "summary": "Give once in test mode; check payment twice with one receipt.",
+      "status": "ships-working",
+      "checklist": "journeys/guest-gift.json"
+    },
+    {
+      "id": "monthly-gift",
+      "role": "donor",
+      "summary": "Authorize monthly giving in test mode; check twice, pause and cancel.",
+      "status": "ships-working",
+      "checklist": "journeys/monthly-gift.json"
+    },
+    {
+      "id": "receipt-email",
+      "role": "owner",
+      "summary": "Requires the platform module to be enabled.",
+      "status": "needs-capability",
+      "capability": "email"
+    },
+    {
+      "id": "campaign-images",
+      "role": "owner",
+      "summary": "Requires the platform module to be enabled.",
+      "status": "needs-capability",
+      "capability": "file_storage"
+    }
+  ],
+  "capabilities": [
+    "accounts",
+    "server_data",
+    "roles",
+    "external_http",
+    "email",
+    "file_input",
+    "download"
+  ],
+  "notIncluded": [
+    "Payments require the platform door, connected test credentials and PRAMAAN_PAYMENTS_TEST_MODE=true. No live paid calls were made.",
+    "Payment refresh is explicit; no background reconciliation, webhook, refunds or tax-deductibility certification.",
+    "Billing transaction refresh reads up to 100 transactions; older gifts require reconciliation.",
+    "Guest receipt proof is kept in the giving browser session. Guest and offline records are never linked to an account by matching email.",
+    "Campaign images accept PNG up to 2 MB. Lists show up to 1000 donors and gifts. CSV imports up to 200 rows."
+  ],
+  "protectedPaths": ["lib/accounts.ts", "lib/donations.ts", "lib/roles/http.ts"]
+}
