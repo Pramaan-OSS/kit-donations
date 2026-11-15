@@ -144,8 +144,8 @@ try {
       .filter({ has: page.getByRole("heading", { name: "Become a donor" }) });
     await f.getByLabel("Your name").fill(name);
     await f.getByLabel("Phone number").fill("9000000000");
-    await f.getByLabel("Email", { exact: true }).fill(name + "@example.test");
-    await f.getByLabel("Password", { exact: true }).fill("donor-walk-strong-password");
+    await f.getByLabel("Your email", { exact: true }).fill(name + "@example.test");
+    await f.getByLabel("Choose a password", { exact: true }).fill("donor-walk-strong-password");
     await f.getByRole("button", { name: "Create account" }).click();
     await page.waitForURL("**/giving");
   }
@@ -158,17 +158,32 @@ try {
     const checklist = JSON.parse(
       await (await import("node:fs/promises")).readFile(j.checklist, "utf8"),
     );
-    const page = j.role === "owner" ? o : j.role === "donor" ? d : g;
-    for (const item of checklist.items)
+    // Run each checklist as the platform does: enterAs opens a fresh browser at home (the owner's is signed in).
+    for (const item of checklist.items) {
+      let page = g;
       for (const step of item.steps) {
+        if (step.enterAs === "owner") page = o;
+        else if (step.enterAs) {
+          page = await (await browser.newContext()).newPage();
+          await page.goto(origin + "/");
+        }
         if (step.goto) await page.goto(origin + step.goto);
+        if (step.click)
+          await page
+            .getByRole("link", { name: step.click, exact: true })
+            .or(page.getByRole("button", { name: step.click, exact: true }))
+            .click();
+        if (step.fill) await page.getByLabel(step.fill).fill(step.value);
         if (step.expectHeading)
           await verify(() =>
             expect(
               page.getByRole("heading", { name: step.expectHeading, exact: false }),
             ).toBeVisible(),
           );
+        if (step.expectText)
+          await verify(() => expect(page.getByText(step.expectText)).toBeVisible());
       }
+    }
     console.log(`journey:${j.id}: passed`);
   }
   await g.goto(origin + "/");

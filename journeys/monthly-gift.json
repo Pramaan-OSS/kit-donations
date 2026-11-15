@@ -5,10 +5,35 @@
       "label": "My giving",
       "steps": [
         {
-          "goto": "/giving"
+          "enterAs": "donor"
         },
         {
-          "expectHeading": "My giving"
+          "click": "Sign in"
+        },
+        {
+          "fill": "Your name",
+          "value": "Monthly Donor"
+        },
+        {
+          "fill": "Phone number",
+          "value": "9000000002"
+        },
+        {
+          "fill": "Your email",
+          "value": "journey-monthly@example.test"
+        },
+        {
+          "fill": "Choose a password",
+          "value": "Donor-journey-pass-2026"
+        },
+        {
+          "click": "Create account"
+        },
+        {
+          "expectHeading": "Giving and monthly gifts"
+        },
+        {
+          "expectText": "No gifts yet. Choose a campaign to give once or monthly."
         }
       ]
     }

@@ -34,6 +34,9 @@ export default function GivingPage() {
           </label>
         </Form>
       </section>
+      {data && !data.requests.length && !data.gifts.length && (
+        <p>No gifts yet. Choose a campaign to give once or monthly.</p>
+      )}
       <h2>Giving and monthly gifts</h2>
       {data?.requests.map((r) => (
         <section key={r.id}>

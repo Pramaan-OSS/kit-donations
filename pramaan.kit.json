@@ -1,6 +1,6 @@
 {
   "id": "donations",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "title": "Donations",
   "summary": "Raise funds with public campaigns, one-off gifts, monthly giving and numbered receipts.",
   "category": "business-operations",
@@ -177,6 +177,7 @@
     "roles",
     "external_http",
     "email",
+    "file_storage",
     "file_input",
     "download"
   ],
