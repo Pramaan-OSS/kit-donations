@@ -44,4 +44,4 @@ Roles live in app_users.role. Only the owner grants staff through the server; si
 
 ## Journeys that ship working
 
-campaigns, donor-signup, owner-settings, campaign-desk, my-giving, guest-gift and monthly-gift. Run node scripts/walk.mjs against a fresh migrated database; it also executes payment completion, duplicate reads, owner-pass reuse, staff sign-in, permission and isolation checks. Payments use the fake module door in checks. Real deployments require enabled test capabilities. Email and files remain needs-capability until those modules are enabled.
+campaigns, donor-signup, owner-settings, campaign-desk, my-giving and guest-gift. monthly-gift waits for payments to be switched on (needs-capability); its checklist keeps the sign-up steps so it runs once they are. Run node scripts/walk.mjs against a fresh migrated database; it also executes payment completion, duplicate reads, owner-pass reuse, staff sign-in, permission and isolation checks. Payments use the fake module door in checks. Real deployments require enabled test capabilities. Email and files remain needs-capability until those modules are enabled.

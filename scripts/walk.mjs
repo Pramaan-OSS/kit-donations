@@ -158,14 +158,19 @@ try {
     const checklist = JSON.parse(
       await (await import("node:fs/promises")).readFile(j.checklist, "utf8"),
     );
-    // Run each checklist as the platform does: enterAs opens a fresh browser at home (the owner's is signed in).
+    // Run each checklist as the platform does: enterAs opens a fresh browser at home (the owner's is signed in), and
+    // an enterAs with "as" returns to that named person's browser.
+    const named = new Map();
     for (const item of checklist.items) {
       let page = g;
       for (const step of item.steps) {
+        const key = `${step.enterAs}\u0000${step.as ?? ""}`;
         if (step.enterAs === "owner") page = o;
+        else if (step.as && named.has(key)) page = named.get(key);
         else if (step.enterAs) {
           page = await (await browser.newContext()).newPage();
           await page.goto(origin + "/");
+          if (step.as) named.set(key, page);
         }
         if (step.goto) await page.goto(origin + step.goto);
         if (step.click)

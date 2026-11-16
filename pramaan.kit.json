@@ -1,6 +1,6 @@
 {
   "id": "donations",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "title": "Donations",
   "summary": "Raise funds with public campaigns, one-off gifts, monthly giving and numbered receipts.",
   "category": "business-operations",
@@ -153,7 +153,8 @@
       "id": "monthly-gift",
       "role": "donor",
       "summary": "Authorize monthly giving in test mode; check twice, pause and cancel.",
-      "status": "ships-working",
+      "status": "needs-capability",
+      "capability": "external_http",
       "checklist": "journeys/monthly-gift.json"
     },
     {
