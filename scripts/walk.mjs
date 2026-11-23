@@ -120,12 +120,12 @@ try {
       ).status(),
     ).toBe(401),
   );
-  await o.getByLabel("Owner email").fill("owner-walk@example.test");
+  await o.getByLabel("Owner email").fill("delivered+donations-owner-walk@resend.dev");
   await o.getByLabel("Password", { exact: true }).fill("owner-walk-strong-password");
   await o.getByRole("button", { name: "Save sign-in" }).click();
   await verify(() => expect(o.getByText("Saved. You can now sign in")).toBeVisible());
   await o.goto(origin + "/settings");
-  await o.getByLabel("Staff email").fill("staff-walk@example.test");
+  await o.getByLabel("Staff email").fill("delivered+donations-staff-walk@resend.dev");
   await o.getByLabel("Temporary password").fill("staff-walk-strong-password");
   await o.getByRole("button", { name: "Add staff", exact: true }).click();
   await verify(() => expect(o.getByText("Staff account added.")).toBeVisible());
@@ -133,7 +133,9 @@ try {
   const signin = s
     .locator("section")
     .filter({ has: s.getByRole("heading", { name: "Sign in", exact: true }) });
-  await signin.getByLabel("Email", { exact: true }).fill("staff-walk@example.test");
+  await signin
+    .getByLabel("Email", { exact: true })
+    .fill("delivered+donations-staff-walk@resend.dev");
   await signin.getByLabel("Password", { exact: true }).fill("staff-walk-strong-password");
   await signin.getByRole("button", { name: "Sign in", exact: true }).click();
   await s.waitForURL("**/giving");
@@ -144,7 +146,9 @@ try {
       .filter({ has: page.getByRole("heading", { name: "Become a donor" }) });
     await f.getByLabel("Your name").fill(name);
     await f.getByLabel("Phone number").fill("9000000000");
-    await f.getByLabel("Your email", { exact: true }).fill(name + "@example.test");
+    await f
+      .getByLabel("Your email", { exact: true })
+      .fill(`delivered+donations-${name}@resend.dev`);
     await f.getByLabel("Choose a password", { exact: true }).fill("donor-walk-strong-password");
     await f.getByRole("button", { name: "Create account" }).click();
     await page.waitForURL("**/giving");
@@ -194,7 +198,7 @@ try {
   await g.goto(origin + "/");
   await g.getByRole("link", { name: "View campaign →" }).first().click();
   await g.getByLabel("Your name").fill("Guest Walker");
-  await g.getByLabel("Email", { exact: true }).fill("guest-walk@example.test");
+  await g.getByLabel("Email", { exact: true }).fill("delivered+donations-guest-walk@resend.dev");
   await g.getByLabel("Hide my name publicly").check();
   await g.getByRole("button", { name: "Continue to test payment" }).click();
   await g.waitForURL("http://127.0.0.1:3541/**");
@@ -226,7 +230,7 @@ try {
   await d.goto(origin + "/");
   await d.getByRole("link", { name: "View campaign →" }).first().click();
   await d.getByLabel("Your name").fill("Donor Walker");
-  await d.getByLabel("Email", { exact: true }).fill("donor-walk@example.test");
+  await d.getByLabel("Email", { exact: true }).fill("delivered+donations-donor-walk@resend.dev");
   await d.getByLabel("Give monthly").check();
   await d.getByRole("button", { name: "Continue to test payment" }).click();
   await d.waitForURL("http://127.0.0.1:3541/**");
@@ -283,13 +287,15 @@ try {
   await verify(async () => expect(publicData.gifts.some((r) => r.name === "Anonymous")).toBe(true));
   await s.goto(origin + "/manage");
   await verify(() =>
-    expect(s.getByLabel("guest-walk@example.test", { exact: true })).toHaveValue("Guest Walker"),
+    expect(s.getByLabel("delivered+donations-guest-walk@resend.dev", { exact: true })).toHaveValue(
+      "Guest Walker",
+    ),
   );
   await s.getByLabel("Campaign update", { exact: true }).fill("The room is taking shape.");
   await s.getByRole("button", { name: "Post update" }).click();
   await verify(() => expect(s.getByText("Saved.", { exact: true }).first()).toBeVisible());
   const importData =
-    "reference,campaign,name,email,amount\noffline-walk,A place for everyone,=FORMULA,offline@example.test,1000";
+    "reference,campaign,name,email,amount\noffline-walk,A place for everyone,=FORMULA,delivered+donations-offline@resend.dev,1000";
   await s.getByLabel("CSV: reference,campaign,name,email,amount").fill(importData);
   await s.getByRole("button", { name: "Import offline gifts" }).click();
   await verify(() => expect(s.getByText("Offline gifts imported.")).toBeVisible());
