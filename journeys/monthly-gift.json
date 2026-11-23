@@ -20,7 +20,7 @@
         },
         {
           "fill": "Your email",
-          "value": "journey-monthly@example.test"
+          "value": "delivered+donations-monthly@resend.dev"
         },
         {
           "fill": "Choose a password",
@@ -28,6 +28,9 @@
         },
         {
           "click": "Create account"
+        },
+        {
+          "click": "My giving"
         },
         {
           "expectHeading": "Giving and monthly gifts"
